@@ -73,7 +73,7 @@ function mainMenu(person, people) {
             //! TODO #2: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
             let personFamily = findPersonFamily(person[0], people);
-            alert(personFamily);
+            displayPeople(personFamily)
             break;
         case "descendants":
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
@@ -81,6 +81,12 @@ function mainMenu(person, people) {
             let personDescendants = findPersonDescendants(person[0], people);
             alert(personDescendants);
             break;
+        //testing function funtionality
+        case "test":
+            let foundPeople = searchByTraits(person[0]);
+            alert (foundPeople);
+            break;
+        //end of test function
         case "restart":
             // Restart app() from the very beginning
             app(people);
@@ -140,6 +146,12 @@ function displayPeople(people) {
 function displayPerson(person) {
     let personInfo = `First Name: ${person.firstName}\n`;
     personInfo += `Last Name: ${person.lastName}\n`;
+    personInfo += `Gender: ${person.gender}\n`;
+    personInfo += `DOB: ${person.dob}\n`;
+    personInfo += `Height: ${person.height}\n`;
+    personInfo += `Weight: ${person.weight}\n`;
+    personInfo += `Eye Color: ${person.eyeColor}\n`;
+    personInfo += `Occupation: ${person.occupation}\n`;
     //! TODO #1a: finish getting the rest of the information to display //////////////////////////////////////////
     alert(personInfo);
 }
@@ -184,3 +196,25 @@ function chars(input) {
 
 //////////////////////////////////////////* End Of Starter Code *//////////////////////////////////////////
 // Any additional functions can be written below this line 👇. Happy Coding! 😁
+
+function searchByTraits(array){
+    let userInputTrait = prompt ("Please enter person trait(s): ");
+    let userInputCriteria = prompt ("Please enter trait criteria: ");
+    let foundPeople = array.filter(function(person){
+        if (person[userInputTrait].includes(userInputCriteria)) {
+            return true;
+        }
+    });
+    return foundPeople;
+}
+
+function findPersonFamily(selectedPerson,arrayOfPeople){
+    // let familyName = prompt ("What is the family name? ");
+    let foundFamily = arrayOfPeople.filter(function(person){
+        if (person.lastName.includes(selectedPerson.lastName)){
+        return true;
+    }
+});
+    return foundFamily;
+
+}
