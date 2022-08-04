@@ -31,7 +31,22 @@ function app(people) {
         case "no":
             //! TODO #4: Declare a searchByTraits (multiple traits) function //////////////////////////////////////////
                 //! TODO #4a: Provide option to search for single or multiple //////////////////////////////////////////
-            searchResults = searchByTraits(people);
+            let traitChoice = promptFor (
+                "Press 1 to search by a single trait, Press 2 to search by multiple traits: ",
+                oneOrTwo
+                )
+                switch (traitChoice){
+                    case "1":
+                        searchResults = searchByTrait(people);
+                        let foundPeople = searchByTrait(people);
+                        displayPeople(foundPeople); 
+                        break;
+                    case "2":
+                        searchResults = searchByMultipleTraits(people);
+                        let foundTraits = searchByMultipleTraits(people);
+                        displayPeople(foundTraits);
+                        break;
+                    }
             break;
         default:
             // Re-initializes the app() if neither case was hit above. This is an instance of recursion.
@@ -82,10 +97,10 @@ function mainMenu(person, people) {
             alert(personDescendants);
             break;
         //testing function funtionality
-        case "test":
-            let foundPeople = searchByTraits(person[0]);
-            alert (foundPeople);
-            break;
+        // case "test":
+        //     let foundPeople = searchByTraits(person[0]);
+        //     alert (foundPeople);
+        //     break;
         //end of test function
         case "restart":
             // Restart app() from the very beginning
@@ -181,6 +196,10 @@ function promptFor(question, valid) {
 function yesNo(input) {
     return input.toLowerCase() === "yes" || input.toLowerCase() === "no";
 }
+
+function oneOrTwo(input){
+    return input === "1" || input === "2";
+}
 // End of yesNo()
 
 /**
@@ -197,8 +216,8 @@ function chars(input) {
 //////////////////////////////////////////* End Of Starter Code *//////////////////////////////////////////
 // Any additional functions can be written below this line 👇. Happy Coding! 😁
 
-function searchByTraits(array){
-    let userInputTrait = prompt ("Please enter person trait(s): ");
+function searchByTrait(array){
+    let userInputTrait = prompt ("Please enter person trait: ");
     let userInputCriteria = prompt ("Please enter trait criteria: ");
     let foundPeople = array.filter(function(person){
         if (person[userInputTrait].includes(userInputCriteria)) {
@@ -207,6 +226,21 @@ function searchByTraits(array){
     });
     return foundPeople;
 }
+
+function searchByMultipleTraits(array){
+    let userInputTraitOne = prompt ("Please enter first trait: ");
+    let userInputCriteriaOne = prompt ("Please enter first trait criteria: ");
+    let userInputTraitTwo = prompt ("Please enter second trait: ");
+    let userInputCriteriaTwo = prompt ("Please enter second trait ");
+    let foundPeople = array.filter(function(person){
+        if (person[userInputTraitOne].includes(userInputCriteriaOne) && person[userInputTraitTwo].includes(userInputCriteriaTwo)) {
+            return true;
+        }
+    });
+    return foundPeople;
+}
+
+
 
 function findPersonFamily(selectedPerson,arrayOfPeople){
     // let familyName = prompt ("What is the family name? ");
