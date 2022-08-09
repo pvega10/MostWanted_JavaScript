@@ -38,13 +38,13 @@ function app(people) {
                 switch (traitChoice){
                     case "1":
                         searchResults = searchByTrait(people);
-                        let foundPeople = searchByTrait(people);
-                        displayPeople(foundPeople); 
+                        // let foundPeople = searchByTrait(people);
+                        displayPeople(searchResults); 
                         break;
                     case "2":
                         searchResults = searchByMultipleTraits(people);
-                        let foundTraits = searchByMultipleTraits(people);
-                        displayPeople(foundTraits);
+                        // let foundTraits = searchByMultipleTraits(people);
+                        displayPeople(searchResults);
                         break;
                     }
             break;
@@ -74,7 +74,7 @@ function mainMenu(person, people) {
         return app(people);
     }
     let displayOption = prompt(
-        `Found ${person[0].firstName} ${person[0].lastName}. Do you want to know their 'info', 'family', or 'descendants'?\nType the option you want or type 'restart' or 'quit'.`
+        `Found ${person[0].firstName} ${person[0].lastName}. Do you want to know their 'info', 'family', 'children', or 'descendants'?\nType the option you want or type 'restart' or 'quit'.`
     );
     // Routes our application based on the user's input
     switch (displayOption) {
@@ -90,19 +90,20 @@ function mainMenu(person, people) {
             let personFamily = findPersonFamily(person[0], people);
             displayPeople(personFamily)
             break;
-        case "descendants":
+        case "children":
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
             // HINT: Review recursion lecture + demo for bonus user story
-            let personDescendants = findPersonDescendants(person[0], people);
+            let personChildren = findPersonChildren(person[0], people);
             // alert(personDescendants);
-            displayPeople(personDescendants);
+            displayPeople(personChildren);
+            // displayPeople(personDescendants);
             break;
-        //testing function funtionality
-        // case "test":
-        //     let foundPeople = searchByTraits(person[0]);
-        //     alert (foundPeople);
-        //     break;
-        //end of test function
+        // testing function funtionality
+        case "descendants":
+            let personGrandChildren = recursiveFindGrandchildren(person[0], people);
+            displayPeople(personGrandChildren);
+            break;
+        // end of test function
         case "restart":
             // Restart app() from the very beginning
             app(people);
@@ -254,23 +255,28 @@ function findPersonFamily(selectedPerson,arrayOfPeople){
 
 }
 
-function findPersonDescendants (selectedPerson, arrayOfDescendants){
-    let foundDescendents = arrayOfDescendants.filter(function(person){
+function findPersonChildren (selectedPerson, arrayOfChildren){
+    let foundChildren = arrayOfChildren.filter(function(person){
         if (person.parents.includes(selectedPerson.id)){
             return true;
         }
+        
     });
-        return foundDescendents;
+        return foundChildren;
 }
-    // array = [person];
-//     if (foundDescendents.length === 0){
-//         return array;
-//     }
-//     for (let i = 0; i < foundDescendents.length; i++) {
-//         array = array.concat(
-//             findPersonDescendants(foundDescendents[i])
-//         );
-//     }
-//     return array;
-    
-// }
+
+function recursiveFindGrandchildren(foundChildren, array = []){
+    let subArray = foundChildren.parents;
+    array = [foundChildren];
+    // Base Case -- Terminating Condition (end of branch)
+    if (subArray.length === 0) {
+        return array;
+    }
+    //Recursive Case -- Branch has sub-branches, search continues
+    for (let i = 0; i < subArray.length; i++) {
+        foundGrandChildrenArray = array.concat(
+            recursiveFindGrandchildren(subArray[i])
+        );
+    }
+    return foundGrandChildrenArray;
+}
